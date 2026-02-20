@@ -158,6 +158,7 @@
          }
          Dom.get(this.id + "-trigger-form").style.display = "none";
          this._renderTriggers();
+         this._saveConfig();
       },
 
       // ---- INDEXER FIELDS ----
@@ -220,6 +221,7 @@
          }
          Dom.get(this.id + "-idxfield-form").style.display = "none";
          this._renderFields();
+         this._saveConfig();
       },
 
       // ---- INDEXES ----
@@ -276,6 +278,7 @@
          }
          Dom.get(this.id + "-index-form").style.display = "none";
          this._renderIndexes();
+         this._saveConfig();
       },
 
       // ---- COMMON ----
@@ -313,6 +316,7 @@
                {
                   this.folderConfig.indexerConfig.triggers.splice(idx, 1);
                   this._renderTriggers();
+                  this._saveConfig();
                }
                break;
             case "edit-idxfield":
@@ -330,6 +334,7 @@
                {
                   this.folderConfig.indexerConfig.fields.splice(idx, 1);
                   this._renderFields();
+                  this._saveConfig();
                }
                break;
             case "edit-index":
@@ -345,6 +350,7 @@
                {
                   this.folderConfig.indexerConfig.indexes.splice(idx, 1);
                   this._renderIndexes();
+                  this._saveConfig();
                }
                break;
          }
@@ -357,12 +363,17 @@
          Dom.get(this.id + "-indexes-table-body").innerHTML = '<tr><td colspan="4" class="empty-message">No indexes defined</td></tr>';
       },
 
-      onSaveAll: function()
+      _saveConfig: function()
       {
          CMOD.saveFolderConfig(this.configFolderNodeId, this.selectedFolderId, this.folderConfig, function()
          {
             Alfresco.util.PopupManager.displayMessage({ text: "Indexer configuration saved" });
          }, this);
+      },
+
+      onSaveAll: function()
+      {
+         this._saveConfig();
       }
    });
 })();

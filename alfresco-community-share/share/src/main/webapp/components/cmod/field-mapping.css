@@ -5,3 +5,11 @@
    border: 1px solid #ccc;
    border-radius: 3px;
 }
+
+.cmod-page .mapping-select {
+   width: 270px;
+   padding: 4px 6px;
+   border: 1px solid #ccc;
+   border-radius: 3px;
+   background: #fff;
+}

@@ -302,8 +302,8 @@
       Alfresco.util.Ajax.request({
          method: "PUT",
          url: url,
-         dataStr: JSON.stringify(data),
-         requestContentType: "application/json",
+         dataObj: data,
+         requestContentType: Alfresco.util.Ajax.JSON,
          responseContentType: Alfresco.util.Ajax.JSON,
          successCallback: {
             fn: function(res)

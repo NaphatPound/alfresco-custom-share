@@ -28,7 +28,7 @@
                <thead>
                   <tr>
                      <th>Field Name</th>
-                     <th>Database Field Name (Alfresco Property)</th>
+                     <th>Alfresco Property</th>
                      <th>Application Group</th>
                      <th>Actions</th>
                   </tr>
