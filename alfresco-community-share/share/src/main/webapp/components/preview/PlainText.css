@@ -86,6 +86,7 @@
 .plain-text-content {
    flex: 1;
    overflow: auto;
+   text-align: left;
 }
 
 .plain-text-code {
@@ -99,6 +100,7 @@
    background: transparent;
    tab-size: 8;
    -moz-tab-size: 8;
+   text-align: left;
 }
 
 /* Scrollbar styling */
