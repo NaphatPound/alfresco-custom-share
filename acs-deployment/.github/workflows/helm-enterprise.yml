@@ -1,0 +1,216 @@
+---
+name: Helm (Enterprise)
+on:
+  pull_request:
+    branches:
+      - master
+      - release/**
+      - next/**
+    paths:
+      - helm/**
+      - test/postman/helm/**
+      - .github/workflows/helm*
+      - .github/actions/charts-as-json/**
+      - test/enterprise-integration-test-values.yaml
+  push:
+    branches:
+      - master
+      - release/**
+concurrency:
+  group: helm-ent-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+jobs:
+  build_vars:
+    runs-on: ubuntu-slim
+    if: >-
+      github.event_name == 'push'
+      || (
+        ! github.event.pull_request.head.repo.fork
+        && github.actor != 'dependabot[bot]'
+      )
+    outputs:
+      ver_json: ${{ steps.app_versions.outputs.json }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+        with:
+          fetch-depth: 0
+      - name: Get charts
+        id: getcharts
+        uses: ./.github/actions/charts-as-json
+        with:
+          charts-root: helm
+      - name: Select ACS enterprise versions excluding any deprecated versions
+        id: app_versions
+        env:
+          JSON: ${{ toJSON(fromJSON(steps.getcharts.outputs.all)) }}
+          JQ_FILTER: >-
+            [inputs | .charts[] | {name: .name, values: .values[]}
+            | del(. | select(.values=="community_values.yaml"))
+            | select(.name=="alfresco-content-services")]
+        run: |
+          echo "${JSON}" | jq -nc '${{ env.JQ_FILTER }}'
+          VERS=$(echo "${JSON}" | jq -nc '${{ env.JQ_FILTER }}')
+          echo "json=$VERS" >> $GITHUB_OUTPUT
+
+  helm_integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs:
+      - build_vars
+    name: ${{ matrix.values }} on ${{ matrix.name }}
+    env:
+      REGISTRY_SECRET_NAME: regcred
+      POD_METRICS_LOG: /tmp/pod-metrics.log
+      NODE_METRICS_LOG: /tmp/node-metrics.log
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.build_vars.outputs.ver_json) }}
+    steps:
+      - uses: Alfresco/alfresco-build-tools/.github/actions/free-hosted-runner-disk-space@v13.0.0
+
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+
+      - uses: azure/setup-helm@1a275c3b69536ee54be43f2070a358922e12c8d4
+        with:
+          version: "3.14.3"
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3.7.0
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Login to Quay.io
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3.7.0
+        with:
+          registry: quay.io
+          username: ${{ secrets.QUAY_USERNAME }}
+          password: ${{ secrets.QUAY_PASSWORD }}
+
+      - name: Setup cluster
+        id: setup-kind
+        uses: Alfresco/alfresco-build-tools/.github/actions/setup-kind@v14.1.1
+        with:
+          traefik-enabled: true
+          cloud-provider-kind-enabled: true
+          metrics: true
+          import-docker-credentials-secret-name: ${{ env.REGISTRY_SECRET_NAME }}
+
+      - name: Background metrics monitoring
+        id: metrics-init
+        run: |
+          while true; do
+            echo "--- $(date) ---" >> $POD_METRICS_LOG
+            kubectl top pod --all-namespaces --sort-by=memory >> $POD_METRICS_LOG 2>&1 || true
+            sleep 10
+          done &
+
+          while true; do
+            echo "--- $(date) ---" >> $NODE_METRICS_LOG
+            kubectl top node >> $NODE_METRICS_LOG 2>&1 || true
+            sleep 10
+          done &
+
+      - name: Check if we want additional helm customizations
+        id: configurable-extra-values
+        run: |
+          if [ "${{ matrix.values }}" = "pre-release_values.yaml" ] || [ "${{ matrix.values }}" = "values.yaml" ]; then
+            echo "Enabling clustered tests with 2 replicas"
+            echo "helm_install_params=--set alfresco-repository.replicaCount=2" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Add dependency chart repos
+        run: |
+          helm repo add self https://alfresco.github.io/alfresco-helm-charts/
+          helm repo add elastic https://helm.elastic.co/
+
+      - name: Helm install
+        run: >-
+          helm dep build ./helm/alfresco-content-services &&
+          helm install acs ./helm/alfresco-content-services
+          --set global.search.sharedSecret="$(openssl rand -hex 24)"
+          --set global.known_urls=http://localhost
+          --set global.alfrescoRegistryPullSecrets=${{ env.REGISTRY_SECRET_NAME }}
+          --set global.imagePullSecrets[0]=${{ env.REGISTRY_SECRET_NAME }}
+          --values helm/${{ matrix.name }}/${{ matrix.values }}
+          --values test/enterprise-integration-test-values.yaml
+          ${{ steps.configurable-extra-values.outputs.helm_install_params }}
+
+      - name: Wait for deployments to be ready
+        uses: Alfresco/alfresco-build-tools/.github/actions/kubectl-wait@v13.0.0
+        with:
+          wait-resource: "deployments"
+          wait-condition: "Available"
+
+      - name: Wait for statefulsets to be ready
+        uses: Alfresco/alfresco-build-tools/.github/actions/kubectl-wait@v13.0.0
+        with:
+          wait-resource: "sts"
+          wait-for-what: "jsonpath"
+          wait-condition: "'{.status.readyReplicas}'=1"
+
+      - name: Wait for jobs to be completed
+        if: matrix.values != '7.4.N_values.yaml'
+        uses: Alfresco/alfresco-build-tools/.github/actions/kubectl-wait@v13.0.0
+        with:
+          wait-resource: "jobs"
+          wait-condition: "complete"
+
+      - name: Spit cluster status after Helm install
+        if: always()
+        run: |
+          helm ls --all-namespaces --all
+          helm status acs --show-resources
+
+      - name: Disable IPv6 to avoid connection refused when connecting to traefik on localhost
+        run: |
+            sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1
+            sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1
+            sudo sysctl -w net.ipv6.conf.lo.disable_ipv6=1
+
+      - name: Run Newman tests
+        uses: nick-fields/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08 # v3.0.2
+        id: newman
+        with:
+          timeout_minutes: 1
+          retry_wait_seconds: 20
+          max_attempts: 5
+          command: >-
+            docker run --network=host
+            -v $(pwd)/test/postman:/etc/postman
+            -t postman/newman run /etc/postman/helm/acs-test-helm-collection.json
+            --global-var protocol=http --global-var url=${{ steps.setup-kind.outputs.ingress-endpoint }}
+
+      - name: Spit cluster status after Newman tests
+        if: always() && steps.newman.outcome != 'skipped'
+        run: |
+          kubectl get all --all-namespaces
+          kubectl describe pod
+          kubectl events --for deployment/acs-alfresco-repository
+
+      - name: Run helm test
+        id: helm_test
+        run: helm test acs
+
+      - name: Spit cluster status after helm test
+        if: always() && steps.helm_test.outcome != 'skipped'
+        run: |
+          kubectl logs -l app.kubernetes.io/component=dtas --tail=-1
+          kubectl get all --all-namespaces
+          kubectl describe pod
+
+          OOM_PODS=$(kubectl get pods -o jsonpath='{.items[?(@.status.containerStatuses[*].lastState.terminated.reason=="OOMKilled")].metadata.name}')
+          if [ -n "$OOM_PODS" ]; then
+            echo "::error::OOMKilled pods detected: $OOM_PODS"
+          fi
+
+      - name: Spit pod metrics logs
+        if: always() && steps.metrics-init.outcome != 'skipped'
+        run: |
+          cat $POD_METRICS_LOG
+
+      - name: Spit node metrics logs
+        if: always() && steps.metrics-init.outcome != 'skipped'
+        run: |
+          cat $NODE_METRICS_LOG

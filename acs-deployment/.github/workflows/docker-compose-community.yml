@@ -1,0 +1,31 @@
+---
+name: Docker Compose (Community)
+
+on:
+  pull_request:
+    branches:
+      - master
+      - release/**
+      - next/**
+    paths:
+      - docker-compose/community-compose.yaml
+      - docker-compose/commons/**
+      - test/postman/docker-compose/**
+      - .github/workflows/docker-compose-community.yml
+  push:
+    branches:
+      - master
+      - release/**
+
+jobs:
+  compose_community:
+    name: Docker Compose community
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+      - uses: >-
+          Alfresco/alfresco-build-tools/.github/actions/dbp-charts/verify-compose@v13.0.0
+        with:
+          compose_file_path: docker-compose/community-compose.yaml
+          postman_path: test/postman/docker-compose
+          postman_json: acs-test-docker-compose-collection.json

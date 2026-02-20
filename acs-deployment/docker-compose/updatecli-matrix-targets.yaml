@@ -1,0 +1,173 @@
+---
+# This file is meant to be used with updatecli uber-manifest pipeline
+# https://github.com/Alfresco/alfresco-updatecli/tree/master/deployments
+name: Alfresco Docker Compose files - Updatecli manifest
+matrix:
+  next:
+    id: next
+    acs:
+      compose_target: &composeNext >-
+        docker-compose/pre-release-compose.yaml
+      compose_key: $.services.alfresco.image
+    share:
+      compose_target: *composeNext
+      compose_key: $.services.share.image
+    search-enterprise:
+      compose_target: *composeNext
+      compose_keys:
+        live-indexing: $.services.search.image
+        reindexing: $.services.search-reindexing.image
+    sync:
+      compose_target: *composeNext
+      compose_key: $.services.sync-service.image
+    adw:
+      compose_target: *composeNext
+      compose_key: $.services.digital-workspace.image
+    adminApp:
+      compose_target: *composeNext
+      compose_key: $.services.control-center.image
+    trouter:
+      compose_target: *composeNext
+      compose_key: $.services.transform-router.image
+    sfs:
+      compose_target: *composeNext
+      compose_key: $.services.shared-file-store.image
+    tengine-aio:
+      compose_target: *composeNext
+      compose_key: $.services.transform-core-aio.image
+    audit-storage:
+      compose_target: *composeNext
+      compose_key: $.services.audit-storage.image
+
+  current:
+    id: current
+    acs:
+      compose_target: &composeCurrent >-
+        docker-compose/compose.yaml
+      compose_key: $.services.alfresco.image
+      # keep the unused anchor to detect multiple usages when copying blocks for new versions
+    share:
+      compose_target: *composeCurrent
+      compose_key: $.services.share.image
+    search:
+      compose_target: docker-compose/solr6-overrides.yaml
+      compose_key: $.services.solr6.image
+    search-enterprise:
+      compose_target: *composeCurrent
+      compose_keys:
+        live-indexing: $.services.search.image
+        reindexing: $.services.search-reindexing.image
+    sync:
+      compose_target: *composeCurrent
+      compose_key: $.services.sync-service.image
+    adw:
+      compose_target: *composeCurrent
+      compose_key: $.services.digital-workspace.image
+    adminApp:
+      compose_target: *composeCurrent
+      compose_key: $.services.control-center.image
+    trouter:
+      compose_target: *composeCurrent
+      compose_key: $.services.transform-router.image
+    sfs:
+      compose_target: *composeCurrent
+      compose_key: $.services.shared-file-store.image
+    tengine-aio:
+      compose_target: *composeCurrent
+      compose_key: $.services.transform-core-aio.image
+    audit-storage:
+      compose_target: *composeCurrent
+      compose_key: $.services.audit-storage.image
+
+  23.N:
+    id: 23n
+    acs:
+      compose_target: &compose23 >-
+        docker-compose/23.N-compose.yaml
+      compose_key: $.services.alfresco.image
+    share:
+      compose_target: *compose23
+      compose_key: $.services.share.image
+    search:
+      compose_target: docker-compose/solr6-overrides.yaml
+      compose_key: $.services.solr6.image
+    search-enterprise:
+      compose_target: *compose23
+      compose_keys:
+        live-indexing: $.services.search.image
+        reindexing: $.services.search-reindexing.image
+    sync:
+      compose_target: *compose23
+      compose_key: $.services.sync-service.image
+    adw:
+      compose_target: *compose23
+      compose_key: $.services.digital-workspace.image
+    adminApp:
+      compose_target: *compose23
+      compose_key: $.services.control-center.image
+    trouter:
+      compose_target: *compose23
+      compose_key: $.services.transform-router.image
+    sfs:
+      compose_target: *compose23
+      compose_key: $.services.shared-file-store.image
+    tengine-aio:
+      compose_target: *compose23
+      compose_key: $.services.transform-core-aio.image
+    audit-storage:
+      compose_target: *compose23
+      compose_key: $.services.audit-storage.image
+
+  7.4.N:
+    id: 74n
+    acs:
+      compose_target: &compose74 >-
+        docker-compose/7.4.N-compose.yaml
+      compose_key: $.services.alfresco.image
+    share:
+      compose_target: *compose74
+      compose_key: $.services.share.image
+    search:
+      compose_target: *compose74
+      compose_key: $.services.solr6.image
+    sync:
+      compose_target: *compose74
+      compose_key: $.services.sync-service.image
+    adw:
+      compose_target: *compose74
+      compose_key: $.services.digital-workspace.image
+    adminApp:
+      compose_target: *compose74
+      compose_key: $.services.control-center.image
+    trouter:
+      compose_target: *compose74
+      compose_key: $.services.transform-router.image
+    sfs:
+      compose_target: *compose74
+      compose_key: $.services.shared-file-store.image
+    tengine-aio:
+      compose_target: *compose74
+      compose_key: $.services.transform-core-aio.image
+
+  community: &community
+    id: com
+    acs:
+      compose_target: &composeOss >-
+        docker-compose/community-compose.yaml
+      compose_key: $.services.alfresco.image
+    share:
+      compose_target: *composeOss
+      compose_key: $.services.share.image
+    search:
+      compose_target: *composeOss
+      compose_key: $.services.solr6.image
+    tengine-aio:
+      image: alfresco/alfresco-transform-core-aio
+      compose_target: *composeOss
+      compose_key: $.services.transform-core-aio.image
+    adminApp:
+      compose_target: *composeOss
+      compose_key: $.services.control-center.image
+    aca:
+      compose_target: *composeOss
+      compose_key: $.services.content-app.image

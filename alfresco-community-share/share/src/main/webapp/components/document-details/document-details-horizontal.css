@@ -1,0 +1,109 @@
+/* Document Details - Horizontal Scroll Layout */
+
+.doc-details-horizontal-scroll {
+   display: flex;
+   flex-direction: row;
+   overflow-x: auto;
+   overflow-y: hidden;
+   gap: 16px;
+   padding: 16px 16px 12px;
+   scroll-behavior: smooth;
+   -webkit-overflow-scrolling: touch;
+}
+
+/* Custom scrollbar styling */
+.doc-details-horizontal-scroll::-webkit-scrollbar {
+   height: 8px;
+}
+
+.doc-details-horizontal-scroll::-webkit-scrollbar-track {
+   background: #f0f0f0;
+   border-radius: 4px;
+}
+
+.doc-details-horizontal-scroll::-webkit-scrollbar-thumb {
+   background: #b0b0b0;
+   border-radius: 4px;
+}
+
+.doc-details-horizontal-scroll::-webkit-scrollbar-thumb:hover {
+   background: #888;
+}
+
+/* Each scroll panel */
+.doc-details-scroll-panel {
+   flex: 0 0 auto;
+   min-width: 400px;
+   max-width: 600px;
+   max-height: calc(100vh - 220px);
+   overflow-y: auto;
+   background: #fff;
+   border: 1px solid #e0e0e0;
+   border-radius: 6px;
+   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* Preview panel gets more width */
+.doc-details-preview-panel {
+   min-width: 550px;
+   max-width: 750px;
+}
+
+/* Metadata panel */
+.doc-details-metadata-panel {
+   min-width: 450px;
+   max-width: 650px;
+}
+
+/* Actions panel */
+.doc-details-actions-panel {
+   min-width: 350px;
+   max-width: 500px;
+}
+
+/* Versions panel */
+.doc-details-versions-panel {
+   min-width: 380px;
+   max-width: 550px;
+}
+
+/* Comments panel */
+.doc-details-comments-panel {
+   min-width: 400px;
+   max-width: 600px;
+}
+
+/* Override default panel styling within horizontal layout */
+.doc-details-horizontal-scroll .document-details-panel {
+   border-top: none;
+   padding: 12px;
+   background-color: transparent;
+}
+
+/* Override default panel body spacing */
+.doc-details-horizontal-scroll .document-details-panel .panel-body {
+   padding: 8px 4px 0;
+}
+
+/* Ensure web-preview fills its panel */
+.doc-details-preview-panel .web-preview {
+   width: 100%;
+}
+
+/* Panel inner scroll bars */
+.doc-details-scroll-panel::-webkit-scrollbar {
+   width: 5px;
+}
+
+.doc-details-scroll-panel::-webkit-scrollbar-track {
+   background: transparent;
+}
+
+.doc-details-scroll-panel::-webkit-scrollbar-thumb {
+   background: #ccc;
+   border-radius: 3px;
+}
+
+.doc-details-scroll-panel::-webkit-scrollbar-thumb:hover {
+   background: #999;
+}

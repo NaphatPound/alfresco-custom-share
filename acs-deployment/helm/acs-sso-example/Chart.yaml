@@ -1,0 +1,49 @@
+apiVersion: v2
+name: acs-sso-example
+description: |
+  An example Chart to demonstrate how to compose your own Alfresco platform
+  with SSO on kubernetes using a third party Keycloak.
+  If you're familiar with [Helm](https://helm.sh) &
+  [Kubernetes](https://kubernetes.io) taking a look at the `values.yaml` should
+  be enough but the principals are also documented in two different steps:
+
+  * Composing your ACS from individual component charts we provide.
+    Check the [step by step documentation](./docs/step-by-step-guide.md)
+  * SSO integration, to add keycloak and configure Alfresco applications
+    accordingly: [SSO guide](./docs/sso-guide.md)
+
+  > Note: this chart is just an example that can run on a localhost only.
+  > It ships ACS repo, the repository database, the message broker, the
+  > Keycloak IdP and front end applications (Share and Content app) & no other
+  > component.
+
+  :warning: All components have persistence disabled so all data is lost after a
+  deployment is destroyed or rolled back!
+type: application
+version: 1.7.0
+appVersion: 25.3.0
+home: https://www.alfresco.com
+sources:
+  - https://github.com/Alfresco/acs-deployment
+dependencies:
+  - name: postgresql
+    repository: oci://registry-1.docker.io/bitnamicharts
+    version: 13.4.0
+    alias: repository-database
+  - name: keycloakx
+    repository: https://codecentric.github.io/helm-charts
+    version: 7.1.6
+  - name: alfresco-repository
+    repository: https://alfresco.github.io/alfresco-helm-charts/
+    version: 1.0.0-alpha.0
+  - name: activemq
+    repository: https://alfresco.github.io/alfresco-helm-charts/
+    version: 3.8.0
+  - name: alfresco-share
+    repository: https://alfresco.github.io/alfresco-helm-charts/
+    version: 2.0.0-alpha.0
+  - name: alfresco-adf-app
+    alias: alfresco-content-app
+    repository: https://alfresco.github.io/alfresco-helm-charts/
+    version: 0.4.0
+icon: https://avatars0.githubusercontent.com/u/391127?s=200&v=4

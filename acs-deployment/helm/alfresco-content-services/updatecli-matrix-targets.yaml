@@ -1,0 +1,306 @@
+---
+# This file is meant to be used with updatecli uber-manifest pipeline
+# https://github.com/Alfresco/alfresco-updatecli/tree/master/deployments
+name: Alfresco Helm Umbrella Chart - Updatecli manifest
+matrix:
+  next:
+    id: next
+    acs:
+      helm_target: &helmvaluesNext >-
+        helm/alfresco-content-services/pre-release_values.yaml
+      helm_key: $.alfresco-repository.image.tag
+    activemq:
+      helm_target: *helmvaluesNext
+      helm_key: $.activemq.image.tag
+    share:
+      helm_target: *helmvaluesNext
+      helm_key: $.share.image.tag
+    search:
+      helm_target: *helmvaluesNext
+      helm_keys: &search_helm_keys
+        search: $.alfresco-search.searchServicesImage.tag
+        insight: $.alfresco-search.insightEngineImage.tag
+    search-enterprise:
+      helm_target: *helmvaluesNext
+      helm_keys:
+        Reindexing: $.alfresco-search-enterprise.reindexing.image.tag
+        Liveindexing:
+          Mediation: >-
+            $.alfresco-search-enterprise.liveIndexing.mediation.image.tag
+          Content: >-
+            $.alfresco-search-enterprise.liveIndexing.content.image.tag
+          Metadata: >-
+            $.alfresco-search-enterprise.liveIndexing.metadata.image.tag
+          Path: >-
+            $.alfresco-search-enterprise.liveIndexing.path.image.tag
+    sync:
+      helm_target: *helmvaluesNext
+      helm_key: $.alfresco-sync-service.image.tag
+    adw:
+      helm_target: *helmvaluesNext
+      helm_key: $.alfresco-digital-workspace.image.tag
+    adminApp:
+      helm_target: *helmvaluesNext
+      helm_key: $.alfresco-control-center.image.tag
+    onedrive:
+      helm_target: *helmvaluesNext
+      helm_key: $.alfresco-connector-ms365.image.tag
+    msteams:
+      helm_target: *helmvaluesNext
+      helm_key: $.alfresco-connector-msteams.image.tag
+    intelligence:
+      helm_target: *helmvaluesNext
+      helm_key: $.alfresco-ai-transformer.image.tag
+    trouter:
+      helm_target: *helmvaluesNext
+      helm_key: $.alfresco-transform-service.transformrouter.image.tag
+    sfs:
+      helm_target: *helmvaluesNext
+      helm_key: $.alfresco-transform-service.filestore.image.tag
+    tengine-misc:
+      helm_target: *helmvaluesNext
+      helm_key: $.alfresco-transform-service.transformmisc.image.tag
+    tengine-im:
+      helm_target: *helmvaluesNext
+      helm_key: $.alfresco-transform-service.imagemagick.image.tag
+    tengine-lo:
+      helm_target: *helmvaluesNext
+      helm_key: $.alfresco-transform-service.libreoffice.image.tag
+    tengine-pdf:
+      helm_target: *helmvaluesNext
+      helm_key: $.alfresco-transform-service.pdfrenderer.image.tag
+    tengine-tika:
+      helm_target: *helmvaluesNext
+      helm_key: $.alfresco-transform-service.tika.image.tag
+    audit-storage:
+      helm_target: *helmvaluesNext
+      helm_key: $.alfresco-audit-storage.image.tag
+
+  current:
+    id: current
+    acs:
+      helm_target: &helmvaluesCurrent >-
+        helm/alfresco-content-services/values.yaml
+      helm_key: $.alfresco-repository.image.tag
+      # keep the unused anchor to detect multiple usages when copying blocks for new versions
+      helm_update_appVersion: &helm_update_appVersion true
+    activemq:
+      helm_target: *helmvaluesCurrent
+      helm_key: $.activemq.image.tag
+    share:
+      helm_target: *helmvaluesCurrent
+      helm_key: $.share.image.tag
+    search:
+      helm_target: *helmvaluesCurrent
+      helm_keys: *search_helm_keys
+    search-enterprise:
+      helm_target: *helmvaluesCurrent
+      helm_keys:
+        Reindexing: $.alfresco-search-enterprise.reindexing.image.tag
+        Liveindexing:
+          Mediation: >-
+            $.alfresco-search-enterprise.liveIndexing.mediation.image.tag
+          Content: >-
+            $.alfresco-search-enterprise.liveIndexing.content.image.tag
+          Metadata: >-
+            $.alfresco-search-enterprise.liveIndexing.metadata.image.tag
+          Path: >-
+            $.alfresco-search-enterprise.liveIndexing.path.image.tag
+    sync:
+      helm_target: *helmvaluesCurrent
+      helm_key: $.alfresco-sync-service.image.tag
+    adw:
+      helm_target: *helmvaluesCurrent
+      helm_key: $.alfresco-digital-workspace.image.tag
+    adminApp:
+      helm_target: *helmvaluesCurrent
+      helm_key: $.alfresco-control-center.image.tag
+    onedrive:
+      helm_target: *helmvaluesCurrent
+      helm_key: $.alfresco-connector-ms365.image.tag
+    msteams:
+      helm_target: *helmvaluesCurrent
+      helm_key: $.alfresco-connector-msteams.image.tag
+    intelligence:
+      helm_target: *helmvaluesCurrent
+      helm_key: $.alfresco-ai-transformer.image.tag
+    trouter:
+      helm_target: *helmvaluesCurrent
+      helm_key: $.alfresco-transform-service.transformrouter.image.tag
+    sfs:
+      helm_target: *helmvaluesCurrent
+      helm_key: $.alfresco-transform-service.filestore.image.tag
+    tengine-misc:
+      helm_target: *helmvaluesCurrent
+      helm_key: $.alfresco-transform-service.transformmisc.image.tag
+    tengine-im:
+      helm_target: *helmvaluesCurrent
+      helm_key: $.alfresco-transform-service.imagemagick.image.tag
+    tengine-lo:
+      helm_target: *helmvaluesCurrent
+      helm_key: $.alfresco-transform-service.libreoffice.image.tag
+    tengine-pdf:
+      helm_target: *helmvaluesCurrent
+      helm_key: $.alfresco-transform-service.pdfrenderer.image.tag
+    tengine-tika:
+      helm_target: *helmvaluesCurrent
+      helm_key: $.alfresco-transform-service.tika.image.tag
+    audit-storage:
+      helm_target: *helmvaluesCurrent
+      helm_key: $.alfresco-audit-storage.image.tag
+
+  23.N:
+    id: 23n
+    acs:
+      helm_target: &helmvalues23 >-
+        helm/alfresco-content-services/23.N_values.yaml
+      helm_key: $.alfresco-repository.image.tag
+    activemq:
+      helm_target: *helmvalues23
+      helm_key: $.activemq.image.tag
+    share:
+      helm_target: *helmvalues23
+      helm_key: $.share.image.tag
+    search:
+      helm_target: *helmvalues23
+      helm_keys: *search_helm_keys
+    search-enterprise:
+      helm_target: *helmvalues23
+      helm_keys:
+        Reindexing: $.alfresco-search-enterprise.reindexing.image.tag
+        Liveindexing:
+          Mediation: >-
+            $.alfresco-search-enterprise.liveIndexing.mediation.image.tag
+          Content: >-
+            $.alfresco-search-enterprise.liveIndexing.content.image.tag
+          Metadata: >-
+            $.alfresco-search-enterprise.liveIndexing.metadata.image.tag
+          Path: >-
+            $.alfresco-search-enterprise.liveIndexing.path.image.tag
+    sync:
+      helm_target: *helmvalues23
+      helm_key: $.alfresco-sync-service.image.tag
+    adw:
+      helm_target: *helmvalues23
+      helm_key: $.alfresco-digital-workspace.image.tag
+    adminApp:
+      helm_target: *helmvalues23
+      helm_key: $.alfresco-control-center.image.tag
+    onedrive:
+      helm_target: *helmvalues23
+      helm_key: $.alfresco-connector-ms365.image.tag
+    msteams:
+      helm_target: *helmvalues23
+      helm_key: $.alfresco-connector-msteams.image.tag
+    intelligence:
+      helm_target: *helmvalues23
+      helm_key: $.alfresco-ai-transformer.image.tag
+    trouter:
+      helm_target: *helmvalues23
+      helm_key: $.alfresco-transform-service.transformrouter.image.tag
+    sfs:
+      helm_target: *helmvalues23
+      helm_key: $.alfresco-transform-service.filestore.image.tag
+    tengine-misc:
+      helm_target: *helmvalues23
+      helm_key: $.alfresco-transform-service.transformmisc.image.tag
+    tengine-im:
+      helm_target: *helmvalues23
+      helm_key: $.alfresco-transform-service.imagemagick.image.tag
+    tengine-lo:
+      helm_target: *helmvalues23
+      helm_key: $.alfresco-transform-service.libreoffice.image.tag
+    tengine-pdf:
+      helm_target: *helmvalues23
+      helm_key: $.alfresco-transform-service.pdfrenderer.image.tag
+    tengine-tika:
+      helm_target: *helmvalues23
+      helm_key: $.alfresco-transform-service.tika.image.tag
+    audit-storage:
+      helm_target: *helmvalues23
+      helm_key: $.alfresco-audit-storage.image.tag
+
+  7.4.N:
+    id: 74n
+    acs:
+      helm_target: &helmvalues74 >-
+        helm/alfresco-content-services/7.4.N_values.yaml
+      helm_key: $.alfresco-repository.image.tag
+    activemq:
+      helm_target: *helmvalues74
+      helm_key: $.activemq.image.tag
+    share:
+      helm_target: *helmvalues74
+      helm_key: $.share.image.tag
+    search:
+      helm_target: *helmvalues74
+      helm_keys: *search_helm_keys
+    search-enterprise:
+      helm_target: *helmvalues74
+      helm_keys:
+        Reindexing: $.alfresco-search-enterprise.reindexing.image.tag
+        Liveindexing:
+          Mediation: >-
+            $.alfresco-search-enterprise.liveIndexing.mediation.image.tag
+          Content: >-
+            $.alfresco-search-enterprise.liveIndexing.content.image.tag
+          Metadata: >-
+            $.alfresco-search-enterprise.liveIndexing.metadata.image.tag
+          Path: >-
+            $.alfresco-search-enterprise.liveIndexing.path.image.tag
+    sync:
+      helm_target: *helmvalues74
+      helm_key: $.alfresco-sync-service.image.tag
+    adw:
+      helm_target: *helmvalues74
+      helm_key: $.alfresco-digital-workspace.image.tag
+    adminApp:
+      helm_target: *helmvalues74
+      helm_key: $.alfresco-control-center.image.tag
+    onedrive:
+      helm_target: *helmvalues74
+      helm_key: $.alfresco-connector-ms365.image.tag
+    msteams:
+      helm_target: *helmvalues74
+      helm_key: $.alfresco-connector-msteams.image.tag
+    intelligence:
+      helm_target: *helmvalues74
+      helm_key: $.alfresco-ai-transformer.image.tag
+    trouter:
+      helm_target: *helmvalues74
+      helm_key: $.alfresco-transform-service.transformrouter.image.tag
+    sfs:
+      helm_target: *helmvalues74
+      helm_key: $.alfresco-transform-service.filestore.image.tag
+    tengine-misc:
+      helm_target: *helmvalues74
+      helm_key: $.alfresco-transform-service.transformmisc.image.tag
+    tengine-im:
+      helm_target: *helmvalues74
+      helm_key: $.alfresco-transform-service.imagemagick.image.tag
+    tengine-lo:
+      helm_target: *helmvalues74
+      helm_key: $.alfresco-transform-service.libreoffice.image.tag
+    tengine-pdf:
+      helm_target: *helmvalues74
+      helm_key: $.alfresco-transform-service.pdfrenderer.image.tag
+    tengine-tika:
+      helm_target: *helmvalues74
+      helm_key: $.alfresco-transform-service.tika.image.tag
+
+  community: &community
+    id: com
+    acs:
+      helm_target: &helmvaluesOss >-
+        helm/alfresco-content-services/community_values.yaml
+      helm_key: $.alfresco-repository.image.tag
+    activemq:
+      helm_target: *helmvaluesOss
+      helm_key: $.activemq.image.tag
+    share:
+      helm_target: *helmvaluesOss
+      helm_key: $.share.image.tag
+    search:
+      helm_target: *helmvaluesOss
+      helm_keys:
+        search: $.alfresco-search.searchServicesImage.tag
