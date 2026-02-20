@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<page>
+   <title>CMOD Field Mapping</title>
+   <description>CMOD Field Mapping configuration page</description>
+   <template-instance>cmod-field-mapping</template-instance>
+   <authentication>admin</authentication>
+</page>

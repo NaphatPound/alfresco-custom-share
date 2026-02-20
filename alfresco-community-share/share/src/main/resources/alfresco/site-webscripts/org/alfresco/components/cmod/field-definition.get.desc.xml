@@ -1,0 +1,6 @@
+<webscript>
+   <shortname>CMOD Field Definition</shortname>
+   <description>CMOD Field Definition management component</description>
+   <url>/components/cmod/field-definition</url>
+   <family>cmod</family>
+</webscript>

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<page>
+   <title>CMOD Field Information</title>
+   <description>CMOD Field Information configuration page</description>
+   <template-instance>cmod-field-information</template-instance>
+   <authentication>admin</authentication>
+</page>

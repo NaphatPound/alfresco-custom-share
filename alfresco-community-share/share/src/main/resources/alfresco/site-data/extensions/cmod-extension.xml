@@ -1,0 +1,16 @@
+<extension>
+   <modules>
+      <module>
+         <id>CMOD Admin Features</id>
+         <description>Adds IBM CMOD-like administration features to Share header</description>
+         <auto-deploy-index>20</auto-deploy-index>
+         <auto-deploy>true</auto-deploy>
+         <customizations>
+            <customization>
+               <targetPackageRoot>org.alfresco.share.header</targetPackageRoot>
+               <sourcePackageRoot>org.alfresco.components.cmod.header</sourcePackageRoot>
+            </customization>
+         </customizations>
+      </module>
+   </modules>
+</extension>

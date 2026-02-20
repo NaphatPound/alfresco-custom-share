@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<template-instance>
+   <template-type>org/alfresco/cmod-search</template-type>
+   <components>
+      <component>
+         <region-id>cmod-search</region-id>
+         <url>/components/cmod/search</url>
+      </component>
+   </components>
+</template-instance>

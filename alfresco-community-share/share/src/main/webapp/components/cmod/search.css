@@ -1,0 +1,35 @@
+/* CMOD Search Page Styles */
+.cmod-page .search-field-row {
+   display: flex;
+   align-items: center;
+   margin-bottom: 8px;
+   gap: 8px;
+}
+
+.cmod-page .search-field-row label {
+   width: 150px;
+   font-weight: bold;
+   flex-shrink: 0;
+}
+
+.cmod-page .search-field-row select.operator-select {
+   width: 140px;
+}
+
+.cmod-page .search-field-row input.search-input {
+   min-width: 200px;
+   padding: 4px 8px;
+   border: 1px solid #ccc;
+   border-radius: 3px;
+}
+
+.cmod-page .search-field-row input.search-input-between {
+   min-width: 95px;
+   padding: 4px 8px;
+   border: 1px solid #ccc;
+   border-radius: 3px;
+}
+
+.cmod-page .between-separator {
+   color: #666;
+}

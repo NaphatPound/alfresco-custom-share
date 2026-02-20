@@ -1,0 +1,6 @@
+<webscript>
+   <shortname>CMOD Field Information</shortname>
+   <description>CMOD Field Information configuration component</description>
+   <url>/components/cmod/field-information</url>
+   <family>cmod</family>
+</webscript>

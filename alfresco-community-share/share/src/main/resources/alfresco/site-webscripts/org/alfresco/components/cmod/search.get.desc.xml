@@ -1,0 +1,6 @@
+<webscript>
+   <shortname>CMOD Search</shortname>
+   <description>CMOD dynamic search component</description>
+   <url>/components/cmod/search</url>
+   <family>cmod</family>
+</webscript>

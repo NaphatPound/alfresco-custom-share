@@ -1,0 +1,6 @@
+<webscript>
+   <shortname>CMOD Field Mapping</shortname>
+   <description>CMOD Field Mapping configuration component</description>
+   <url>/components/cmod/field-mapping</url>
+   <family>cmod</family>
+</webscript>

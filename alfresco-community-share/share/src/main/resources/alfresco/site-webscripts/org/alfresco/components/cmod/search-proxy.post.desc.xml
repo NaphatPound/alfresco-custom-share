@@ -1,0 +1,8 @@
+<webscript>
+   <shortname>CMOD Search Proxy</shortname>
+   <description>Server-side proxy for CMOD search queries against the Alfresco v1 Search API</description>
+   <url>/components/cmod/search-proxy</url>
+   <format default="json" />
+   <family>cmod</family>
+   <authentication>user</authentication>
+</webscript>

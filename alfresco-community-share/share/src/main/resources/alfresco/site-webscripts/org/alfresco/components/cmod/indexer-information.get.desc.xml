@@ -1,0 +1,6 @@
+<webscript>
+   <shortname>CMOD Indexer Information</shortname>
+   <description>CMOD Indexer Information configuration component</description>
+   <url>/components/cmod/indexer-information</url>
+   <family>cmod</family>
+</webscript>

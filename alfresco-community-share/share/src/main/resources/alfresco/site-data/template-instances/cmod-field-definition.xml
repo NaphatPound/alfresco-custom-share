@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<template-instance>
+   <template-type>org/alfresco/cmod-field-definition</template-type>
+   <components>
+      <component>
+         <region-id>cmod-field-definition</region-id>
+         <url>/components/cmod/field-definition</url>
+      </component>
+   </components>
+</template-instance>

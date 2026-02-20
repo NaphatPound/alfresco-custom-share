@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<page>
+   <title>CMOD Indexer Information</title>
+   <description>CMOD Indexer Information configuration page</description>
+   <template-instance>cmod-indexer-information</template-instance>
+   <authentication>admin</authentication>
+</page>

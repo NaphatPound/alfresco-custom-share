@@ -1,0 +1,257 @@
+/* CMOD Common Styles */
+
+.cmod-page {
+   margin: 1em;
+}
+
+.cmod-page .page-title {
+   font-size: 1.4em;
+   font-weight: bold;
+   margin-bottom: 1em;
+   color: #333;
+}
+
+/* Folder Selector Panel */
+.cmod-page .folder-selector-panel {
+   background: #f5f5f5;
+   border: 1px solid #ddd;
+   border-radius: 4px;
+   padding: 12px 16px;
+   margin-bottom: 16px;
+   display: flex;
+   align-items: center;
+   gap: 12px;
+   flex-wrap: wrap;
+}
+
+.cmod-page .folder-selector-panel label {
+   font-weight: bold;
+   margin-right: 4px;
+}
+
+.cmod-page .folder-selector-panel select {
+   padding: 4px 8px;
+   min-width: 200px;
+}
+
+.cmod-page .folder-selector-panel .folder-actions {
+   display: flex;
+   gap: 8px;
+}
+
+/* Toolbar */
+.cmod-page .toolbar {
+   margin-bottom: 12px;
+   display: flex;
+   gap: 8px;
+   align-items: center;
+}
+
+/* Data Table */
+.cmod-page .data-table-container {
+   border: 1px solid #ddd;
+   border-radius: 4px;
+   overflow: hidden;
+}
+
+.cmod-page table.cmod-table {
+   width: 100%;
+   border-collapse: collapse;
+}
+
+.cmod-page table.cmod-table thead th {
+   background: #4d7fa8;
+   color: #fff;
+   padding: 8px 12px;
+   text-align: left;
+   font-weight: bold;
+   border-right: 1px solid #5a8cb5;
+   font-size: 0.9em;
+}
+
+.cmod-page table.cmod-table thead th:last-child {
+   border-right: none;
+}
+
+.cmod-page table.cmod-table tbody td {
+   padding: 6px 12px;
+   border-bottom: 1px solid #eee;
+   font-size: 0.9em;
+}
+
+.cmod-page table.cmod-table tbody tr:hover {
+   background: #e8f0f8;
+}
+
+.cmod-page table.cmod-table tbody tr.selected {
+   background: #d0e0f0;
+}
+
+.cmod-page table.cmod-table tbody tr:nth-child(even) {
+   background: #fafafa;
+}
+
+.cmod-page table.cmod-table tbody tr:nth-child(even):hover {
+   background: #e8f0f8;
+}
+
+/* Forms */
+.cmod-page .form-panel {
+   background: #fafafa;
+   border: 1px solid #ddd;
+   border-radius: 4px;
+   padding: 16px;
+   margin-top: 16px;
+}
+
+.cmod-page .form-panel .form-title {
+   font-size: 1.1em;
+   font-weight: bold;
+   margin-bottom: 12px;
+   color: #333;
+   border-bottom: 1px solid #ddd;
+   padding-bottom: 8px;
+}
+
+.cmod-page .form-row {
+   margin-bottom: 10px;
+   display: flex;
+   align-items: center;
+}
+
+.cmod-page .form-row label {
+   width: 180px;
+   font-weight: bold;
+   flex-shrink: 0;
+}
+
+.cmod-page .form-row input[type="text"],
+.cmod-page .form-row input[type="number"],
+.cmod-page .form-row select,
+.cmod-page .form-row textarea {
+   padding: 4px 8px;
+   border: 1px solid #ccc;
+   border-radius: 3px;
+   min-width: 250px;
+}
+
+.cmod-page .form-row textarea {
+   min-height: 60px;
+}
+
+.cmod-page .form-actions {
+   margin-top: 12px;
+   display: flex;
+   gap: 8px;
+}
+
+/* Checkbox group */
+.cmod-page .checkbox-group {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 12px;
+}
+
+.cmod-page .checkbox-group label {
+   width: auto;
+   font-weight: normal;
+   display: flex;
+   align-items: center;
+   gap: 4px;
+}
+
+/* Buttons */
+.cmod-page .cmod-btn {
+   padding: 5px 14px;
+   border: 1px solid #ccc;
+   border-radius: 3px;
+   background: #f5f5f5;
+   cursor: pointer;
+   font-size: 0.9em;
+}
+
+.cmod-page .cmod-btn:hover {
+   background: #e0e0e0;
+}
+
+.cmod-page .cmod-btn-primary {
+   background: #4d7fa8;
+   color: #fff;
+   border-color: #3a6a8f;
+}
+
+.cmod-page .cmod-btn-primary:hover {
+   background: #3a6a8f;
+}
+
+.cmod-page .cmod-btn-danger {
+   background: #d9534f;
+   color: #fff;
+   border-color: #c9302c;
+}
+
+.cmod-page .cmod-btn-danger:hover {
+   background: #c9302c;
+}
+
+/* Field selector */
+.cmod-page .field-selector-panel {
+   background: #f5f5f5;
+   border: 1px solid #ddd;
+   border-radius: 4px;
+   padding: 12px 16px;
+   margin-bottom: 16px;
+   display: flex;
+   align-items: center;
+   gap: 12px;
+}
+
+.cmod-page .field-selector-panel label {
+   font-weight: bold;
+}
+
+.cmod-page .field-selector-panel select {
+   padding: 4px 8px;
+   min-width: 200px;
+}
+
+/* Empty state */
+.cmod-page .empty-message {
+   text-align: center;
+   padding: 40px;
+   color: #999;
+   font-style: italic;
+}
+
+/* Section panels for multi-section pages */
+.cmod-page .section-panel {
+   border: 1px solid #ddd;
+   border-radius: 4px;
+   margin-bottom: 16px;
+}
+
+.cmod-page .section-panel .section-title {
+   background: #f0f0f0;
+   padding: 8px 12px;
+   font-weight: bold;
+   border-bottom: 1px solid #ddd;
+}
+
+.cmod-page .section-panel .section-body {
+   padding: 12px;
+}
+
+/* Search results */
+.cmod-page .search-results-panel {
+   margin-top: 16px;
+}
+
+.cmod-page .search-results-panel .results-count {
+   margin-bottom: 8px;
+   font-weight: bold;
+   color: #333;
+}
+
+.cmod-page table.cmod-table tbody tr.clickable {
+   cursor: pointer;
+}

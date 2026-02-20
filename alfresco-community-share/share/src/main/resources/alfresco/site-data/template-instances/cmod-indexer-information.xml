@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<template-instance>
+   <template-type>org/alfresco/cmod-indexer-information</template-type>
+   <components>
+      <component>
+         <region-id>cmod-indexer-information</region-id>
+         <url>/components/cmod/indexer-information</url>
+      </component>
+   </components>
+</template-instance>
